@@ -9,7 +9,9 @@ int keyCompare(const void *key1, const void *key2)
   return(0);
 }
 
-/*------------------------------------------------------------------------------------*/
+/*---------
+contient les noms de tous les fichiers et les
+retourne dans une structure avec n contenant le nolbretotal de fichiers -----------------------*/
 
 char **readList(char *name, int *n)
 {

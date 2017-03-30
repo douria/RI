@@ -11,7 +11,10 @@ typedef struct {
   float d;
 } KEY;
 
+
+
 int keyCompare(const void *key1, const void *key2);
+
 char **readList(char *name, int *n);
 float **readDescriptors(char *name, int n, int *d);
 int *readAnnotations(char *name, int n);
