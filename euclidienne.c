@@ -8,7 +8,7 @@
 
 #include "rdjpeg.h"
 #include "proc.h"
-
+#include "cgiu.h"
 #define TAILLE_MAX 580
 
 float couleur[64];
@@ -104,6 +104,10 @@ for (j = 0; j < 64; j++) {   /* pixel par pixel */
     
   }
 
+ for (j = 0; j < 64; j++) {   
+	 couleur1[j]=couleur1[j]/(cima.ny*cima.nx);		
+}
+
 /************partie ayant generé le fichire hist.txt*****************/
 
 /*	resultat=fopen("hist.txt","w+");
@@ -118,6 +122,8 @@ for (j = 0; j < 64; j++) {   /* pixel par pixel */
 	fprintf(resultat,"\n");
  }
 fclose(resultat);*/
+
+
 int k=0;
 
 /************La partie qui remplie la liste chgainée avec pour chasue image son DE ******************/
@@ -125,7 +131,6 @@ char * mot;
 //on recupere l'hist de l'image en question
 mot=malloc(sizeof(char)*100);
 for(j=0;j<nb_images; j++){
-  if(strcmp(noms_images[j],argv[1])!=0){
 
 	if(fgets(ligne, TAILLE_MAX, hist)!=NULL){
 		for(i=0;i<64;i++){
@@ -138,19 +143,35 @@ for(j=0;j<nb_images; j++){
 	DE=distance_euclidienne_( couleur ,couleur1);
 	classement[j].k=j;
 	classement[j].d=DE;
-	//printf("\t image num : % d  a une dist de DE=%f\n",j,DE);
 	}
-  }
 
 }
+print_html_head("resultat.html");
+printf("<p> ");
+printf("image query ");
+printf("</p> ");
+printf("<img src=\"");
+printf("%s ",argv[1]);
+printf("\">\n");
 
-  qsort (classement, nb_images, sizeof(KEY), keyCompare);
+
+printf("<p> ");
+printf("display results ");
+printf("</p> ");
+qsort (classement, nb_images, sizeof(KEY), keyCompare);
+
 j=0;
 while(j<10){
 	//if(strcmp(noms_images[classement[j].k],argv[1])!=0 ){
-		printf("l'image est : %s  et DE= %f \n",noms_images[classement[j].k],classement[j].d); j++;
+		printf("<img src=\"");
+		printf("%s ",noms_images[classement[j+1].k]); j++;
+		printf("\">\n");
+		printf("<p> ");
+		printf("%s a pour DE : %f ",noms_images[classement[j+1].k],classement[j+1].d);
+		printf("</p> ");
 	//}
 }
+ print_html_tail();
 
 return 0;
 }
