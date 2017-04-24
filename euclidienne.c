@@ -9,7 +9,7 @@
 #include "rdjpeg.h"
 #include "proc.h"
 
-#define TAILLE_MAX 558
+#define TAILLE_MAX 580
 
 float couleur[64];
 
@@ -49,6 +49,7 @@ int nb_pixel;
 
 };
 
+/********calcule la distance euclidienne entre deux couleur***************/
 
 float distance_euclidienne_(float * couleur1 , float* couleur2){
 float DE=0.0;
@@ -56,7 +57,7 @@ float racine;
 int j;
 	 for (j = 0; j < 64; j++) {   /* pixel par pixel */
   
-			 DE= ((couleur1[j]-couleur2[j])*(couleur1[j]-couleur2[j]));
+			 DE=DE+ ((couleur1[j]-couleur2[j])*(couleur1[j]-couleur2[j]));
 	   }
 racine=sqrt(DE);
 return racine;
@@ -126,29 +127,30 @@ mot=malloc(sizeof(char)*100);
 for(j=0;j<nb_images; j++){
   if(strcmp(noms_images[j],argv[1])!=0){
 
-	while(fgets(ligne, TAILLE_MAX, hist)!=NULL){
-
+	if(fgets(ligne, TAILLE_MAX, hist)!=NULL){
 		for(i=0;i<64;i++){
-			//fprintf(stderr,"%s\n",ligne);
 			mot = strtok(&ligne[k]," ");
-			fprintf(stderr,"le mot est :%s\t",mot);	
 			couleur[i]=atof(mot);
-			//printf("la couleur vaut : %f ",couleur[i]);
 			k=k+9;
 		}
 	k=0;
-	printf("apres le for\n");
-	DE=distance_euclidienne_(couleur1 , couleur);
+
+	DE=distance_euclidienne_( couleur ,couleur1);
 	classement[j].k=j;
 	classement[j].d=DE;
-	printf("\tDE=%f    ",DE);
+	//printf("\t image num : % d  a une dist de DE=%f\n",j,DE);
 	}
   }
 
 }
 
-
-
+  qsort (classement, nb_images, sizeof(KEY), keyCompare);
+j=0;
+while(j<10){
+	//if(strcmp(noms_images[classement[j].k],argv[1])!=0 ){
+		printf("l'image est : %s  et DE= %f \n",noms_images[classement[j].k],classement[j].d); j++;
+	//}
+}
 
 return 0;
 }
