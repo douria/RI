@@ -176,8 +176,6 @@ printf("</p> ");
   qsort (classement, nb_images, sizeof(KEY), keyCompare);
 j=0;
 while(j<10){
-nom_int=malloc(sizeof(char)*50);
-nom_im=malloc( sizeof(char)*50);
 
 	printf("<img src=\"");
 		printf("%s ",noms_images[classement[j+1].k]); j++;
